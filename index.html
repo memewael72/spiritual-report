@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مفكرة كنيسة الملاك ميخائيل الروحية</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <div class="church-logo">⛪</div>
+            <h1>كنيسة الملاك ميخائيل</h1>
+            <p class="subtitle">المفكرة الروحية الأسبوعية</p>
+        </header>
+
+        <!-- بيانات المستخدم -->
+        <div class="user-info-section">
+            <div class="input-group">
+                <label for="userName">إسم الخادم / المخدوم:</label>
+                <input type="text" id="userName" placeholder="اكتب اسمك الثلاثي هنا...">
+            </div>
+            <div class="input-group">
+                <label for="weekSelect">تحديد الأسبوع:</label>
+                <select id="weekSelect">
+                    <option value="الأسبوع الأول">الأسبوع الأول</option>
+                    <option value="الأسبوع الثاني">الأسبوع الثاني</option>
+                    <option value="الأسبوع الثالث">الأسبوع الثالث</option>
+                    <option value="الأسبوع الرابع">الأسبوع الرابع</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- عداد الإنجاز الأسبوعي -->
+        <div class="progress-section">
+            <div class="progress-bar-container">
+                <div id="progressBar" class="progress-bar"></div>
+            </div>
+            <p class="progress-text">نسبة الإنجاز الإجمالية للأسبوع: <span id="progressPercent">0%</span></p>
+        </div>
+
+        <!-- جدول الأيام والممارسات الروحية -->
+        <div class="weekly-tracker">
+            <h3 class="section-title">📊 جدول المتابعة اليومية</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>اليوم</th>
+                            <th>صلاة</th>
+                            <th>إنجيل</th>
+                            <th>قداس</th>
+                            <th>كتاب</th>
+                        </tr>
+                    </thead>
+                    <tbody id="trackerBody">
+                        <!-- سيتم توليد الأيام تلقائياً بواسطة الجافاسكريبت -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- أزرار التحكم والإرسال -->
+        <div class="actions-section">
+            <button id="shareBtn" class="btn-share">📱 إرسال التقرير الروحي عبر الواتساب</button>
+            <button id="resetBtn" class="btn-reset">🔄 تصفير الجدول للأسبوع الجديد</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة تحكم إدارة المفكرة الروحية</title>
+    <title>مفكرة كنيسة الملاك ميخائيل الروحية</title>
     <style>
         :root {
             --church-purple: #4a154b;
@@ -20,214 +20,250 @@
             background: var(--bg-gradient);
             color: var(--text-main);
             margin: 0;
-            padding: 20px;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
             min-height: 100vh;
         }
 
-        .dashboard-container {
-            max-width: 1000px;
-            margin: 0 auto;
+        .app-container {
+            width: 100%;
+            max-width: 650px;
             background: var(--card-bg);
-            padding: 30px;
+            padding: 25px;
             border-radius: 25px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            margin: auto;
         }
 
         header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             border-bottom: 2px solid #edf2f7;
             padding-bottom: 15px;
         }
 
         .church-logo { font-size: 40px; margin-bottom: 5px; }
-        header h1 { margin: 0; font-size: 26px; color: var(--church-purple); }
-        .subtitle { margin: 5px 0 0; color: #718096; font-size: 15px; }
+        header h1 { margin: 0; font-size: 24px; color: var(--church-purple); }
+        .subtitle { margin: 5px 0 0; color: #718096; font-size: 14px; font-weight: 500; }
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
+        .user-info-section {
+            background: #f7fafc;
+            padding: 15px;
             border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .stat-card h4 { margin: 0 0 10px; font-size: 14px; color: #718096; }
-        .stat-card .number { font-size: 24px; font-weight: bold; color: var(--church-purple); }
-
-        .filter-section {
-            display: flex;
-            gap: 15px;
             margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .filter-section input, .filter-section select {
-            padding: 10px 15px;
-            border: 2px solid #cbd5e0;
-            border-radius: 10px;
-            font-size: 14px;
-            outline: none;
-            flex: 1;
-            min-width: 180px;
-        }
-
-        .table-container {
-            overflow-x: auto;
-            border-radius: 12px;
             border: 1px solid #e2e8f0;
-            background: white;
         }
+
+        .input-group { display: flex; flex-direction: column; margin-bottom: 12px; }
+        .input-group label { font-size: 14px; font-weight: bold; margin-bottom: 6px; color: var(--church-purple); }
+        .input-group input, .input-group select { padding: 12px; border: 2px solid #cbd5e0; border-radius: 10px; font-size: 15px; outline: none; }
+
+        .progress-section {
+            background: #fffaf0; border: 1px solid #feebc8; padding: 15px; border-radius: 15px; text-align: center; margin-bottom: 20px;
+        }
+
+        .progress-bar-container { background: #edf2f7; border-radius: 10px; height: 14px; overflow: hidden; margin-bottom: 8px; }
+        .progress-bar { background: linear-gradient(90deg, var(--church-purple), var(--success)); width: 0%; height: 100%; transition: width 0.3s ease; }
+        .progress-text { margin: 0; font-weight: bold; font-size: 14px; }
+        #progressPercent { color: var(--success); }
+
+        .section-title { font-size: 16px; color: var(--church-purple); margin-bottom: 12px; font-weight: bold; }
+        .table-container { overflow-x: auto; border-radius: 12px; border: 1px solid #e2e8f0; margin-bottom: 15px; background: white; }
 
         table { width: 100%; border-collapse: collapse; text-align: center; }
-        th, td { padding: 14px 10px; border-bottom: 1px solid #edf2f7; font-size: 14px; }
+        th, td { padding: 12px 8px; border-bottom: 1px solid #edf2f7; font-size: 14px; vertical-align: middle; }
         th { background: var(--church-purple); color: white; font-weight: 600; white-space: nowrap; }
 
-        .badge {
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-            display: inline-block;
-        }
-        .badge-high { background: #e6fffa; color: #234e52; }
-        .badge-medium { background: #feebc8; color: #744210; }
-        .badge-low { background: #fff5f5; color: #9b2c2c; }
+        .tracker-checkbox { width: 22px; height: 22px; cursor: pointer; accent-color: var(--church-purple); }
 
-        .btn-reset-db {
-            background: #e53e3e;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-        .btn-reset-db:hover { background: #c53030; }
+        .actions-section { margin-top: 20px; display: flex; flex-direction: column; gap: 10px; }
+        button { border: none; padding: 14px; border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer; text-align: center; width: 100%; transition: opacity 0.2s; }
+        button:hover { opacity: 0.9; }
 
-        .no-data {
-            padding: 20px;
-            color: #a0aec0;
-            font-weight: 500;
-        }
+        .btn-submit { background: var(--primary-blue); color: white; }
+        .btn-share { background: var(--success); color: white; }
+        .btn-reset { background: #fff5f5; color: #e53e3e; border: 1px solid #fed7d7; padding: 10px; font-size: 13px; }
     </style>
 </head>
 <body>
-    <div class="dashboard-container">
+    <div class="app-container">
         <header>
             <div class="church-logo">⛪</div>
-            <h1>لوحة تحكم كنيسة الملاك ميخائيل</h1>
-            <p class="subtitle">متابعة نتائج تقارير المفكرة الروحية الأسبوعية</p>
+            <h1>كنيسة الملاك ميخائيل</h1>
+            <p class="subtitle">المفكرة الروحية الأسبوعية</p>
         </header>
 
-        <div style="text-align: left;">
-            <button class="btn-reset-db" onclick="resetAllData()">🗑️ مسح وتصفير جميع السجلات القديمة</button>
-        </div>
-
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h4>إجمالي المشاركين</h4>
-                <div class="number" id="totalParticipants">0</div>
+        <div class="user-info-section">
+            <div class="input-group">
+                <label for="userName">إسم الخادم / المخدوم:</label>
+                <input type="text" id="userName" placeholder="اكتب اسمك الثلاثي هنا...">
             </div>
-            <div class="stat-card">
-                <h4>متوسط نسبة الإنجاز</h4>
-                <div class="number" id="avgProgress">0%</div>
+            <div class="input-group">
+                <label for="weekSelect">تحديد الأسبوع:</label>
+                <select id="weekSelect">
+                    <option value="الأسبوع الأول">الأسبوع الأول</option>
+                    <option value="الأسبوع الثاني">الأسبوع الثاني</option>
+                    <option value="الأسبوع الثالث">الأسبوع الثالث</option>
+                    <option value="الأسبوع الرابع">الأسبوع الرابع</option>
+                </select>
             </div>
         </div>
 
-        <div class="filter-section">
-            <input type="text" id="searchInput" placeholder="🔍 بحث باسم الخادم / المخدوم..." onkeyup="loadData()">
-            <select id="weekFilter" onchange="loadData()">
-                <option value="">جميع الأسابيع</option>
-                <option value="الأسبوع الأول">الأسبوع الأول</option>
-                <option value="الأسبوع الثاني">الأسبوع الثاني</option>
-                <option value="الأسبوع الثالث">الأسبوع الثالث</option>
-                <option value="الأسبوع الرابع">الأسبوع الرابع</option>
-            </select>
+        <div class="progress-section">
+            <div class="progress-bar-container">
+                <div id="progressBar" class="progress-bar"></div>
+            </div>
+            <p class="progress-text">نسبة الإنجاز الإجمالية للأسبوع: <span id="progressPercent">0%</span></p>
         </div>
 
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>الاسم</th>
-                        <th>الأسبوع</th>
-                        <th>نسبة الإنجاز</th>
-                        <th>حالة التقييم</th>
-                        <th>التاريخ</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody">
-                </tbody>
-            </table>
+        <div class="weekly-tracker">
+            <h3 class="section-title">📊 جدول المتابعة اليومية</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>اليوم</th>
+                            <th>باكر</th>
+                            <th>النوم</th>
+                            <th>كتاب مقدس</th>
+                            <th>التناول</th>
+                            <th>الاجتماع</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-weight: bold; background: #f7fafc;">السبت</td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="matins"></td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="sleeping"></td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="bible"></td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="communion"></td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="meeting"></td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold; background: #f7fafc;">الأحد</td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="matins"></td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="sleeping"></td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="bible"></td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="communion"></td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="meeting"></td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold; background: #f7fafc;">الإثنين</td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="matins"></td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="sleeping"></td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="bible"></td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="communion"></td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="meeting"></td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold; background: #f7fafc;">الثلاثاء</td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="matins"></td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="sleeping"></td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="bible"></td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="communion"></td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="meeting"></td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold; background: #f7fafc;">الأربعاء</td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="matins"></td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="sleeping"></td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="bible"></td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="communion"></td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="meeting"></td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold; background: #f7fafc;">الخميس</td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="matins"></td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="sleeping"></td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="bible"></td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="communion"></td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="meeting"></td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold; background: #f7fafc;">الجمعة</td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="matins"></td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="sleeping"></td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="bible"></td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="communion"></td>
+                            <td><input type="checkbox" class="tracker-checkbox" data-activity="meeting"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="actions-section">
+            <button class="btn-submit" id="submitBtn">حفظ وإرسال البيانات</button>
+            <button class="btn-reset" id="resetBtn">إعادة ضبط</button>
         </div>
     </div>
 
     <script>
-        function getBadge(percent) {
-            if (percent >= 85) return '<span class="badge badge-high">ممتاز</span>';
-            if (percent >= 50) return '<span class="badge badge-medium">جيد جداً</span>';
-            return '<span class="badge badge-low">يحتاج متابعة</span>';
-        }
+        // توزيع النسبة المئوية على الأنشطة (إجمالي الإنجاز = 100%):
+        // باكر (إجمالي 30.5%) -> 30.5 / 7 أيام ≈ 4.357% لكل يوم
+        // النوم (إجمالي 30.5%) -> 30.5 / 7 أيام ≈ 4.357% لكل يوم
+        // كتاب مقدس (إجمالي 30.5%) -> 30.5 / 7 أيام ≈ 4.357% لكل يوم
+        // التناول (إجمالي 4.35%) -> 4.35 / 7 أيام ≈ 0.621% لكل يوم
+        // الاجتماع (إجمالي 4.35%) -> 4.35 / 7 أيام ≈ 0.621% لكل يوم
 
-        function loadData() {
-            const records = JSON.parse(localStorage.getItem('spiritualNotebookData')) || [];
-            const searchInput = document.getElementById('searchInput').value.toLowerCase();
-            const weekFilter = document.getElementById('weekFilter').value;
-            const tableBody = document.getElementById('tableBody');
-            
-            tableBody.innerHTML = '';
+        const WEIGHTS = {
+            matins: 30.5 / 7,
+            sleeping: 30.5 / 7,
+            bible: 30.5 / 7,
+            communion: 4.35 / 7,
+            meeting: 4.35 / 7
+        };
 
-            let totalPercent = 0;
-            let count = 0;
+        const checkboxes = document.querySelectorAll('.tracker-checkbox');
+        const progressBar = document.getElementById('progressBar');
+        const progressPercent = document.getElementById('progressPercent');
+        const submitBtn = document.getElementById('submitBtn');
+        const resetBtn = document.getElementById('resetBtn');
 
-            records.forEach(rec => {
-                const matchesName = rec.name.toLowerCase().includes(searchInput);
-                const matchesWeek = weekFilter === "" || rec.week === weekFilter;
+        function updateProgress() {
+            let totalProgress = 0;
 
-                if (matchesName && matchesWeek) {
-                    count++;
-                    totalPercent += rec.percent;
-
-                    const row = `
-                        <tr>
-                            <td style="font-weight: bold;">${rec.name}</td>
-                            <td>${rec.week}</td>
-                            <td style="font-weight: bold; color: var(--church-purple);">${rec.percent}%</td>
-                            <td>${getBadge(rec.percent)}</td>
-                            <td>${rec.date}</td>
-                        </tr>
-                    `;
-                    tableBody.innerHTML += row;
+            checkboxes.forEach(cb => {
+                if (cb.checked) {
+                    const activity = cb.getAttribute('data-activity');
+                    if (WEIGHTS[activity]) {
+                        totalProgress += WEIGHTS[activity];
+                    }
                 }
             });
 
-            if (count === 0) {
-                tableBody.innerHTML = '<tr><td colspan="5" class="no-data">لا توجد بيانات مسجلة حتى الآن</td></tr>';
-            }
-
-            document.getElementById('totalParticipants').innerText = count;
-            const avg = count > 0 ? Math.round(totalPercent / count) : 0;
-            document.getElementById('avgProgress').innerText = `${avg}%`;
+            // تقريب النسبة لأقرب رقمين عشريين
+            const finalPercent = Math.min(Math.round(totalProgress * 100) / 100, 100);
+            
+            progressBar.style.width = `${finalPercent}%`;
+            progressPercent.innerText = `${finalPercent}%`;
         }
 
-        function resetAllData() {
-            if (confirm("هل أنت متأكد من مسح جميع الأسماء والسجلات المسجلة حالياً وتصفير اللوحة؟")) {
-                localStorage.removeItem('spiritualNotebookData');
-                loadData();
-                alert("تم تصفير الجدول بنجاح!");
-            }
-        }
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', updateProgress);
+        });
 
-        window.onload = loadData;
+        submitBtn.addEventListener('click', () => {
+            const userName = document.getElementById('userName').value.trim();
+            const week = document.getElementById('weekSelect').value;
+            const percent = progressPercent.innerText;
+
+            if (!userName) {
+                alert('يرجى كتابة اسمك أولاً!');
+                return;
+            }
+
+            alert(`تم حفظ البيانات بنجاح!\nالاسم: ${userName}\nالفترة: ${week}\nنسبة الإنجاز: ${percent}`);
+        });
+
+        resetBtn.addEventListener('click', () => {
+            if (confirm('هل أنت تأكد من إعادة ضبط جميع الإدخالات؟')) {
+                checkboxes.forEach(cb => cb.checked = false);
+                document.getElementById('userName').value = '';
+                updateProgress();
+            }
+        });
     </script>
 </body>
 </html>

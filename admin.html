@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم إدارة المفكرة الروحية</title>
+    <style>
+        :root {
+            --church-purple: #4a154b;
+            --gold: #d4af37;
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --card-bg: #ffffff;
+            --text-main: #2d3748;
+            --success: #2ecc71;
+            --primary-blue: #3498db;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #edf2f7;
+            padding-bottom: 15px;
+        }
+
+        .church-logo { font-size: 40px; margin-bottom: 5px; }
+        header h1 { margin: 0; font-size: 26px; color: var(--church-purple); }
+        .subtitle { margin: 5px 0 0; color: #718096; font-size: 15px; }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-card h4 { margin: 0 0 10px; font-size: 14px; color: #718096; }
+        .stat-card .number { font-size: 24px; font-weight: bold; color: var(--church-purple); }
+
+        .filter-section {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-section input, .filter-section select {
+            padding: 10px 15px;
+            border: 2px solid #cbd5e0;
+            border-radius: 10px;
+            font-size: 14px;
+            outline: none;
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            background: white;
+        }
+
+        table { width: 100%; border-collapse: collapse; text-align: center; }
+        th, td { padding: 14px 10px; border-bottom: 1px solid #edf2f7; font-size: 14px; }
+        th { background: var(--church-purple); color: white; font-weight: 600; white-space: nowrap; }
+
+        .badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+        }
+        .badge-high { background: #e6fffa; color: #234e52; }
+        .badge-medium { background: #feebc8; color: #744210; }
+        .badge-low { background: #fff5f5; color: #9b2c2c; }
+
+        .btn-reset-db {
+            background: #e53e3e;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .btn-reset-db:hover { background: #c53030; }
+
+        .no-data {
+            padding: 20px;
+            color: #a0aec0;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <header>
+            <div class="church-logo">⛪</div>
+            <h1>لوحة تحكم كنيسة الملاك ميخائيل</h1>
+            <p class="subtitle">متابعة نتائج تقارير المفكرة الروحية الأسبوعية</p>
+        </header>
+
+        <div style="text-align: left;">
+            <button class="btn-reset-db" onclick="resetAllData()">🗑️ مسح وتصفير جميع السجلات القديمة</button>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h4>إجمالي المشاركين</h4>
+                <div class="number" id="totalParticipants">0</div>
+            </div>
+            <div class="stat-card">
+                <h4>متوسط نسبة الإنجاز</h4>
+                <div class="number" id="avgProgress">0%</div>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <input type="text" id="searchInput" placeholder="🔍 بحث باسم الخادم / المخدوم..." onkeyup="loadData()">
+            <select id="weekFilter" onchange="loadData()">
+                <option value="">جميع الأسابيع</option>
+                <option value="الأسبوع الأول">الأسبوع الأول</option>
+                <option value="الأسبوع الثاني">الأسبوع الثاني</option>
+                <option value="الأسبوع الثالث">الأسبوع الثالث</option>
+                <option value="الأسبوع الرابع">الأسبوع الرابع</option>
+            </select>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>الاسم</th>
+                        <th>الأسبوع</th>
+                        <th>نسبة الإنجاز</th>
+                        <th>حالة التقييم</th>
+                        <th>التاريخ</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function getBadge(percent) {
+            if (percent >= 85) return '<span class="badge badge-high">ممتاز</span>';
+            if (percent >= 50) return '<span class="badge badge-medium">جيد جداً</span>';
+            return '<span class="badge badge-low">يحتاج متابعة</span>';
+        }
+
+        function loadData() {
+            const records = JSON.parse(localStorage.getItem('spiritualNotebookData')) || [];
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const weekFilter = document.getElementById('weekFilter').value;
+            const tableBody = document.getElementById('tableBody');
+            
+            tableBody.innerHTML = '';
+
+            let totalPercent = 0;
+            let count = 0;
+
+            records.forEach(rec => {
+                const matchesName = rec.name.toLowerCase().includes(searchInput);
+                const matchesWeek = weekFilter === "" || rec.week === weekFilter;
+
+                if (matchesName && matchesWeek) {
+                    count++;
+                    totalPercent += rec.percent;
+
+                    const row = `
+                        <tr>
+                            <td style="font-weight: bold;">${rec.name}</td>
+                            <td>${rec.week}</td>
+                            <td style="font-weight: bold; color: var(--church-purple);">${rec.percent}%</td>
+                            <td>${getBadge(rec.percent)}</td>
+                            <td>${rec.date}</td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += row;
+                }
+            });
+
+            if (count === 0) {
+                tableBody.innerHTML = '<tr><td colspan="5" class="no-data">لا توجد بيانات مسجلة حتى الآن</td></tr>';
+            }
+
+            document.getElementById('totalParticipants').innerText = count;
+            const avg = count > 0 ? Math.round(totalPercent / count) : 0;
+            document.getElementById('avgProgress').innerText = `${avg}%`;
+        }
+
+        function resetAllData() {
+            if (confirm("هل أنت متأكد من مسح جميع الأسماء والسجلات المسجلة حالياً وتصفير اللوحة؟")) {
+                localStorage.removeItem('spiritualNotebookData');
+                loadData();
+                alert("تم تصفير الجدول بنجاح!");
+            }
+        }
+
+        window.onload = loadData;
+    </script>
+</body>
+</html>
